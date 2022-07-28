@@ -2,6 +2,7 @@
 <resources>
     <color name="primaryShade">#FFD260</color>
     <color name="light_grey">#E2E2E2</color>
+    <color name="very_light_grey">#F8F8F8</color>
     <color name="secondaryShade">#1C1C1C</color>
     <color name="colorRipple">#878787</color>
     <color name="colorText">#1C1C1C</color>

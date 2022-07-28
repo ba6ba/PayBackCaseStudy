@@ -1,6 +1,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation">
+    android:id="@+id/navigation"
+    app:startDestination="@id/imageListingFragment">
+
+    <fragment
+        android:id="@+id/imageListingFragment"
+        android:name="com.ba6ba.paybackcasestudy.images.presentation.ImageListingFragment"
+        android:label="Search Image"
+        tools:layout="@layout/fragment_image_listing">
+
+        <action
+            android:id="@+id/image_listing_to_image_details"
+            app:destination="@id/imageDetailsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/imageDetailsFragment"
+        android:name="com.ba6ba.paybackcasestudy.images.presentation.ImageDetailsFragment"
+        android:label="Image Details"
+        tools:layout="@layout/fragment_image_details" />
 
 </navigation>

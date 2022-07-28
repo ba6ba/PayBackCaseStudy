@@ -7,7 +7,6 @@
         android:id="@+id/root_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/root_item_background"
         android:padding="@dimen/_16sdp">
 
         <androidx.appcompat.widget.AppCompatImageView

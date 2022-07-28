@@ -3,6 +3,7 @@
     <color name="primaryShade">#1C1C1C</color>
     <color name="light_grey">#E2E2E2</color>
     <color name="secondaryShade">#FFD260</color>
+    <color name="very_light_grey">#F8F8F8</color>
     <color name="colorRipple">#DFDFDF</color>
     <color name="shimmerShade">@color/light_grey</color>
     <color name="colorText">#FFFF</color>
