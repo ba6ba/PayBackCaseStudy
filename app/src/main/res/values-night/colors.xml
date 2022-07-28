@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryShade">#FFD260</color>
+    <color name="primaryShade">#1C1C1C</color>
     <color name="light_grey">#E2E2E2</color>
-    <color name="secondaryShade">#1C1C1C</color>
-    <color name="colorRipple">#878787</color>
+    <color name="secondaryShade">#FFD260</color>
+    <color name="colorRipple">#DFDFDF</color>
     <color name="shimmerShade">@color/light_grey</color>
 </resources>
