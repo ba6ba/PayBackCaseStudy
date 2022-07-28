@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PayBackCaseStudy</string>
+    <string name="search_images">Search images</string>
+    <string name="retry">Try again</string>
+    <string name="error_screen_description">Hmm, something went wrong. How about trying again?</string>
+    <string name="error_screen_title">Ooopssss!</string>
 </resources>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_16sdp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back_icon"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:background="@drawable/circle_icon_ripple_bg"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="@dimen/_16sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@id/details_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_icon"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_32sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_14ssp"
+                app:fontFamily="@font/muli_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Abdul Basit Malik" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userName" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/likes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableStart="@drawable/ic_heart"
+                android:drawablePadding="@dimen/_8sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/muli_medium"
+                app:layout_constraintEnd_toStartOf="@+id/comments"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chip_group"
+                tools:text="Likes" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/comments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableStart="@drawable/ic_comment"
+                android:drawablePadding="@dimen/_8sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/muli_medium"
+                app:layout_constraintEnd_toStartOf="@+id/downloads"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/likes"
+                app:layout_constraintTop_toBottomOf="@id/chip_group"
+                tools:text="Comments" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/downloads"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableStart="@drawable/ic_download"
+                android:drawablePadding="@dimen/_8sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/muli_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/comments"
+                app:layout_constraintTop_toBottomOf="@id/chip_group"
+                tools:text="Downloads" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

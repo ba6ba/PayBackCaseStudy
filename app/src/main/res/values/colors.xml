@@ -4,5 +4,6 @@
     <color name="light_grey">#E2E2E2</color>
     <color name="secondaryShade">#1C1C1C</color>
     <color name="colorRipple">#878787</color>
+    <color name="colorText">#1C1C1C</color>
     <color name="shimmerShade">@color/light_grey</color>
 </resources>

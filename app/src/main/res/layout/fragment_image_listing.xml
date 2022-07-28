@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_root"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/secondaryShade">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="@string/search_images"
+                android:textColor="@color/primaryShade"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/muli_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/primaryShade" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_margin="@dimen/_4sdp"
+                android:background="@drawable/transparent_ripple_item_background"
+                android:padding="@dimen/_8sdp"
+                android:id="@+id/day_night_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_night_mode" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/light_grey"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/failureLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/retryAnimation"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/_16sdp"
+                    android:padding="@dimen/_24sdp"
+                    app:layout_constraintBottom_toTopOf="@id/errorTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/retry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/errorTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:fontFamily="@font/muli_semibold"
+                    android:gravity="center"
+                    android:text="@string/error_screen_title"
+                    android:textColor="@color/primaryShade"
+                    android:textSize="@dimen/_16ssp"
+                    app:layout_constraintBottom_toTopOf="@+id/errorDescription"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/errorDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_32sdp"
+                    android:fontFamily="@font/muli_regular"
+                    android:gravity="center"
+                    android:text="@string/error_screen_description"
+                    android:textColor="@color/primaryShade"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/retryButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/retryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_margin="@dimen/_16sdp"
+                    android:background="@drawable/retry_button_ripple_background"
+                    android:fontFamily="@font/muli_regular"
+                    android:gravity="center"
+                    android:text="@string/retry"
+                    android:textColor="@color/secondaryShade"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:textAllCaps="false" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/items_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:spanCount="2"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideInset"
+                android:scrollbarSize="@dimen/_4sdp"
+                tools:listitem="@layout/home_list_item"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:id="@+id/loading_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider">
+
+                <include
+                    layout="@layout/home_list_skeleton_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    layout="@layout/home_list_skeleton_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp" />
+
+                <include
+                    layout="@layout/home_list_skeleton_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp" />
+
+                <include
+                    layout="@layout/home_list_skeleton_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</layout>

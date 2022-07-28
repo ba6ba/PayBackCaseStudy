@@ -5,4 +5,5 @@
     <color name="secondaryShade">#FFD260</color>
     <color name="colorRipple">#DFDFDF</color>
     <color name="shimmerShade">@color/light_grey</color>
+    <color name="colorText">#FFFF</color>
 </resources>
