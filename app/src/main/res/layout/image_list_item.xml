@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="uiData"
+            type="com.ba6ba.paybackcasestudy.images.data.ImageItemUiData" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root_item"
         android:layout_width="match_parent"
@@ -15,6 +22,7 @@
             android:layout_height="@dimen/_100sdp"
             android:backgroundTint="@color/light_grey"
             android:scaleType="centerCrop"
+            app:load_image="@{uiData.imageUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
@@ -27,6 +35,7 @@
             android:fontFamily="@font/muli_medium"
             android:textColor="@android:color/black"
             android:textSize="@dimen/_12ssp"
+            android:text="@{uiData.userName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image"
@@ -36,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:add_tags="@{uiData.tags}"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintTop_toBottomOf="@id/userName" />

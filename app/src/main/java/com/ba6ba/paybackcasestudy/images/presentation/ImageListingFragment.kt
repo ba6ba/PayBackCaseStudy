@@ -14,10 +14,23 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
 
     private val binding: FragmentImageListingBinding by dataBinding(FragmentImageListingBinding::bind)
     private val imageListingViewModel: ImageListingViewModel by viewModels()
+    private val imageListingAdapter: ImageListingAdapter by lazy {
+        ImageListingAdapter(::onImageClickListener)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = imageListingViewModel
+        setBindings()
         imageListingViewModel.setPersistedDisplayMode()
     }
+
+    private fun setBindings() {
+        binding.run {
+            viewModel = imageListingViewModel
+            adapter = imageListingAdapter
+        }
+    }
+
+    private fun onImageClickListener(imageItemUiData: String) = Unit
+
 }

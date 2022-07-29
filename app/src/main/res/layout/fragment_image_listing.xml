@@ -8,6 +8,10 @@
             name="viewModel"
             type="com.ba6ba.paybackcasestudy.images.presentation.ImageListingViewModel" />
 
+        <variable
+            name="adapter"
+            type="com.ba6ba.paybackcasestudy.images.presentation.ImageListingAdapter" />
+
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -158,7 +162,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/search_view"
                 app:spanCount="2"
-                tools:listitem="@layout/home_list_item"
+                app:add_item_decoration="@{null}"
+                app:set_paging_adapter="@{adapter}"
+                tools:listitem="@layout/image_list_item"
                 tools:visibility="visible" />
 
             <LinearLayout
@@ -174,24 +180,24 @@
                 app:layout_constraintTop_toBottomOf="@id/search_view">
 
                 <include
-                    layout="@layout/home_list_skeleton_item"
+                    layout="@layout/image_list_skeleton_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <include
-                    layout="@layout/home_list_skeleton_item"
+                    layout="@layout/image_list_skeleton_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp" />
 
                 <include
-                    layout="@layout/home_list_skeleton_item"
+                    layout="@layout/image_list_skeleton_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp" />
 
                 <include
-                    layout="@layout/home_list_skeleton_item"
+                    layout="@layout/image_list_skeleton_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp" />
