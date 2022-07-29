@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ba6ba.paybackcasestudy.images.presentation.ImageListingViewModel" />
+
+    </data>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/fragment_root"
         android:layout_width="match_parent"
@@ -22,6 +29,7 @@
                 android:text="@string/search_images"
                 android:textColor="@color/primaryShade"
                 android:textSize="@dimen/_12ssp"
+                app:show_on_success="@{viewModel.viewStateFlow}"
                 app:fontFamily="@font/muli_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +43,10 @@
                 android:layout_margin="@dimen/_4sdp"
                 android:background="@drawable/transparent_ripple_item_background"
                 android:padding="@dimen/_8sdp"
+                android:onClick="@{() -> viewModel.onDayNightButtonClick()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:image_drawable_resource="@{viewModel.dayNightIconResource}"
                 tools:src="@drawable/ic_night_mode" />
 
             <View
@@ -44,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/light_grey"
+                app:show_on_success="@{viewModel.viewStateFlow}"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
             <androidx.appcompat.widget.SearchView
@@ -64,6 +75,7 @@
                 android:id="@+id/failureLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                app:show_on_error="@{viewModel.viewStateFlow}"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +151,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
+                app:show_on_success="@{viewModel.viewStateFlow}"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -152,6 +165,7 @@
                 android:id="@+id/loading_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                show_on_loading="@{viewModel.viewStateFlow}"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"

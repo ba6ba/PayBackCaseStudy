@@ -1,4 +1,4 @@
-package com.ba6ba.paybackcasestudy.base
+package com.ba6ba.paybackcasestudy.common
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import com.ba6ba.paybackcasestudy.BR
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
