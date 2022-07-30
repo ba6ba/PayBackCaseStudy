@@ -36,9 +36,11 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
     }
 
     private fun listenAdapterUpdates() {
-        lifecycleScope.launch {
-            imageListingViewModel.collectPagingData().collectLatest { pagingData ->
-                imageListingAdapter.submitData(pagingData)
+        imageListingViewModel.onQueryTextChange.observe(viewLifecycleOwner) { query ->
+            lifecycleScope.launch {
+                imageListingViewModel.collectPagingData(query).collectLatest { pagingData ->
+                    imageListingAdapter.submitData(pagingData)
+                }
             }
         }
         imageListingAdapter.addLoadStateListener { combinedLoadStates ->

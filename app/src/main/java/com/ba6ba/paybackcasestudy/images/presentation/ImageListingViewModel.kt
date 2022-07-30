@@ -1,7 +1,6 @@
 package com.ba6ba.paybackcasestudy.images.presentation
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -14,12 +13,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 @HiltViewModel
 class ImageListingViewModel @Inject constructor(
     private val lightDarkModeManager: LightDarkModeManager,
-    private val imageListingUseCase: ImageListingUseCase
+    private val imageListingUseCase: ImageListingUseCase,
+    private val stringsResourceManager: StringsResourceManager
 ) : ViewModel() {
 
     val viewStateFlow: StateFlow<ViewState<Unit>>
@@ -32,6 +33,12 @@ class ImageListingViewModel @Inject constructor(
         get() = _dayNightIconResource
     private val _dayNightIconResource: MutableStateFlow<Int> by lazy {
         MutableStateFlow(R.drawable.ic_day_mode)
+    }
+
+    val onQueryTextChange: MutableLiveData<String>
+        get() = _onQueryTextChange
+    private val _onQueryTextChange: MutableLiveData<String> by lazy {
+        MutableLiveData(stringsResourceManager.getString(R.string.default_query))
     }
 
     fun setPersistedDisplayMode() {
@@ -49,8 +56,8 @@ class ImageListingViewModel @Inject constructor(
         updateDayNightIcon()
     }
 
-    fun collectPagingData(): Flow<PagingData<ImageItemUiData>> =
-        imageListingUseCase("fruite").cachedIn(viewModelScope)
+    fun collectPagingData(query: String) =
+        imageListingUseCase(query).cachedIn(viewModelScope)
 
     fun processCombinedStates(combinedLoadStates: CombinedLoadStates) {
         _viewStateFlow.value = if (hasErrorInAppendOrPrepend(combinedLoadStates)) {
@@ -91,5 +98,13 @@ class ImageListingViewModel @Inject constructor(
 
             else -> EMPTY_STRING
         }.default
+    }
+
+    val onQueryTextSubmit: OnQueryTextSubmit by lazy {
+        object : OnQueryTextSubmit {
+            override fun onSubmit(query: String) {
+                _onQueryTextChange.value = query
+            }
+        }
     }
 }

@@ -5,4 +5,6 @@
     <string name="error_screen_description">Hmm, something went wrong. How about trying again?</string>
     <string name="error_screen_title">Ooopssss!</string>
     <string name="search_for_images">Search for images</string>
+    <string name="default_query">fruits</string>
+    <string name="no_data_found">Hmmm, it seems we have no data against this search. Do you want to try again with new query?</string>
 </resources>

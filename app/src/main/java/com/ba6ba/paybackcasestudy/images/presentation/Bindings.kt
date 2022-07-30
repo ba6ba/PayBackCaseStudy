@@ -2,12 +2,11 @@ package com.ba6ba.paybackcasestudy.images.presentation
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.TypedValue
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.SearchView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
@@ -15,10 +14,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
-import coil.transform.RoundedCornersTransformation
 import coil.transition.CrossfadeTransition
 import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.ViewState
+import com.ba6ba.paybackcasestudy.common.default
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -74,7 +73,11 @@ fun ImageView.loadImage(url: String?) {
 fun ChipGroup.addChips(tags: List<String>) {
     removeAllViews()
     tags.forEach { tag ->
-        addView(createTagChip(context = context, chipName = tag.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }))
+        addView(
+            createTagChip(
+                context = context,
+                chipName = tag.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() })
+        )
     }
 }
 
@@ -103,5 +106,36 @@ fun SwipeRefreshLayout.onRefreshCallback(onRefresh: () -> Unit) {
     setOnRefreshListener {
         onRefresh()
         isRefreshing = false
+    }
+}
+
+@BindingAdapter(value = ["on_query_text_submit_listener"])
+fun SearchView.onQueryTextSubmit(onQueryTextSubmit: OnQueryTextSubmit) {
+    setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(p0: String?): Boolean {
+            onQueryTextSubmit.onSubmit(p0.default)
+            return false
+        }
+
+        override fun onQueryTextChange(p0: String?): Boolean {
+            return false
+        }
+    })
+}
+
+@FunctionalInterface
+interface OnQueryTextSubmit {
+    fun onSubmit(query: String)
+}
+
+@BindingAdapter(value = ["set_default_text"])
+fun SearchView.setDefaultText(text: String) {
+    setQuery(text, true)
+}
+
+@BindingAdapter(value = ["set_view_state_error_message"])
+fun AppCompatTextView.setViewStateError(viewState: ViewState<*>) {
+    if (viewState is ViewState.Error) {
+        text = viewState.uiError.message
     }
 }

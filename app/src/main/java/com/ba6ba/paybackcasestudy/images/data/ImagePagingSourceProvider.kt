@@ -3,7 +3,9 @@ package com.ba6ba.paybackcasestudy.images.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ba6ba.network.ApiResult
+import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.Constants
+import com.ba6ba.paybackcasestudy.common.StringsResourceManager
 import com.ba6ba.paybackcasestudy.common.default
 import javax.inject.Inject
 
@@ -12,7 +14,8 @@ interface ImagePagingSourceProvider {
 }
 
 class DefaultImagePagingSourceProvider @Inject constructor(
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
+    private val stringsResourceManager: StringsResourceManager
 ) : ImagePagingSourceProvider {
     override fun get(query: String): PagingSource<Int, ImageResponseItem> {
         return object : PagingSource<Int, ImageResponseItem>() {
@@ -21,14 +24,18 @@ class DefaultImagePagingSourceProvider @Inject constructor(
                 val page = params.key ?: Constants.DEFAULT_PAGE
                 loadResult = when (val response = imageRepository.getImages(query, page)) {
                     is ApiResult.Success ->
-                        LoadResult.Page(
-                            data = response.data.hits.orEmpty(),
-                            prevKey = getPreviousKey(page),
-                            nextKey = getNextKey(
-                                page,
-                                response.data.hits?.count().default()
+                        if (page == Constants.DEFAULT_PAGE && response.data.hits?.isEmpty() == true) {
+                            LoadResult.Error(Throwable(stringsResourceManager.getString(R.string.no_data_found)))
+                        } else {
+                            LoadResult.Page(
+                                data = response.data.hits.orEmpty(),
+                                prevKey = getPreviousKey(page),
+                                nextKey = getNextKey(
+                                    page,
+                                    response.data.hits?.count().default()
+                                )
                             )
-                        )
+                        }
 
                     is ApiResult.Failure ->
                         LoadResult.Error(Throwable(response.error.message))
