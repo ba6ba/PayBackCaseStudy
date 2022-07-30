@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("include" to listOf("*.jar"), "dir" to "libs")))
+    implementation(project(":network"))
     implementation(Dependencies.kotlinStdlibJdk)
     implementation(Dependencies.kotlinCoreKtx)
     implementation(Dependencies.androidAppcompat)

@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import com.ba6ba.paybackcasestudy.BR
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -48,7 +46,3 @@ fun String?.default(other: String? = null) = this ?: other.default
 
 val View.inflater
     get() = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-fun Context.browseUrl(url: String?) {
-    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-}

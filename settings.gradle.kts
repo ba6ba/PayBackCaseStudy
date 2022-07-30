@@ -14,5 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "PayBackCaseStudy"
 include(
-    ":app"
+    ":app",
+    ":network"
 )

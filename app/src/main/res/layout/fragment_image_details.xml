@@ -14,7 +14,7 @@
             android:layout_height="@dimen/_32sdp"
             android:background="@drawable/circle_icon_ripple_bg"
             android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

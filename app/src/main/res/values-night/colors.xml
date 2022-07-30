@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryShade">#1C1C1C</color>
+    <color name="primaryShade">#000</color>
     <color name="light_grey">#E2E2E2</color>
-    <color name="secondaryShade">#FFD260</color>
     <color name="very_light_grey">#F8F8F8</color>
-    <color name="colorRipple">#DFDFDF</color>
-    <color name="shimmerShade">@color/light_grey</color>
+    <color name="secondaryShade">#114AF8</color>
+    <color name="colorRipple">#878787</color>
     <color name="colorText">#FFFF</color>
+    <color name="shimmerShade">@color/light_grey</color>
+    <color name="listing_background_color">#000</color>
+    <color name="retry_button_text_color">#000</color>
+    <color name="failure_text_color">#fff</color>
+    <color name="failure_text_description_color">#fff</color>
 </resources>

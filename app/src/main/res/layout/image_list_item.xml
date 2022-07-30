@@ -13,18 +13,21 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_16sdp">
+        android:padding="@dimen/_8sdp"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            android:backgroundTint="@color/light_grey"
+            android:elevation="@dimen/_4sdp"
+            android:layout_height="@dimen/_160sdp"
             android:scaleType="centerCrop"
-            app:load_image="@{uiData.imageUrl}"
+            android:background="@color/very_light_grey"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:load_image="@{uiData.imageUrl}"
             tools:src="@tools:sample/avatars" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -33,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:fontFamily="@font/muli_medium"
-            android:textColor="@android:color/black"
+            android:textColor="@color/failure_text_color"
             android:textSize="@dimen/_12ssp"
             android:text="@{uiData.userName}"
             app:layout_constraintEnd_toEndOf="parent"
