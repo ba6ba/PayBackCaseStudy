@@ -5,8 +5,6 @@ S
 #buildSrc/src/main/java/BuildType.kt,e/d/ed27b910f8b93b028be6ff7cd1198b21d1d20ce2
 W
 'buildSrc/src/main/java/AndroidConfig.kt,a/9/a9973f1d73e524cebdfc89f4d3ddb6dde8ac1570
-d
-4network/src/main/java/com/ba6ba/network/ApiResult.kt,1/b/1bcf4db34e650b2dfe20fdcc9fa3d6885b50cd05
 e
 5network/src/main/java/com/ba6ba/network/GsonHelper.kt,9/2/92b60dccdaf37cab03a0e3326eb29595820936a5
 h

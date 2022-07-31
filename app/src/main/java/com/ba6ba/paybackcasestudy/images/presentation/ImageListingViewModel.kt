@@ -1,6 +1,5 @@
 package com.ba6ba.paybackcasestudy.images.presentation
 
-import android.os.Parcelable
 import androidx.lifecycle.*
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -10,19 +9,18 @@ import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.*
 import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
+import com.ba6ba.paybackcasestudy.images.data.LocalDataProvider
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class ImageListingViewModel @Inject constructor(
     private val lightDarkModeManager: LightDarkModeManager,
     private val imageListingUseCase: ImageListingUseCase,
-    private val stringsResourceManager: StringsResourceManager
+    private val stringsResourceManager: StringsResourceManager,
+    private val localDataProvider: LocalDataProvider
 ) : ViewModel() {
 
     val viewStateFlow: StateFlow<ViewState<Unit>>
@@ -37,10 +35,14 @@ class ImageListingViewModel @Inject constructor(
         MutableStateFlow(R.drawable.ic_day_mode)
     }
 
-    val onQueryTextChange: MutableLiveData<String>
-        get() = _onQueryTextChange
-    private val _onQueryTextChange: MutableLiveData<String> by lazy {
-        MutableLiveData(stringsResourceManager.getString(R.string.default_query))
+    private val _onQueryTextChange: MutableStateFlow<String> by lazy {
+        MutableStateFlow(stringsResourceManager.getString(R.string.default_query))
+    }
+
+    val pagingDataFlow: Flow<PagingData<ImageItemUiData>> by lazy {
+        _onQueryTextChange.flatMapLatest { query ->
+            imageListingUseCase(query)
+        }.cachedIn(viewModelScope)
     }
 
     fun setPersistedDisplayMode() {
@@ -57,9 +59,6 @@ class ImageListingViewModel @Inject constructor(
         lightDarkModeManager.toggle()
         updateDayNightIcon()
     }
-
-    fun collectPagingData(query: String) =
-        imageListingUseCase(query).cachedIn(viewModelScope)
 
     fun processCombinedStates(combinedLoadStates: CombinedLoadStates) {
         _viewStateFlow.value = if (hasErrorInAppendOrPrepend(combinedLoadStates)) {
@@ -117,6 +116,7 @@ class ImageListingViewModel @Inject constructor(
     val onQueryTextSubmit: OnQueryTextSubmit by lazy {
         object : OnQueryTextSubmit {
             override fun onSubmit(query: String) {
+                localDataProvider.clearLastFetchedPage()
                 _onQueryTextChange.value = query
             }
         }

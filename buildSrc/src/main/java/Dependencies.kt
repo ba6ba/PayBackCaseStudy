@@ -52,7 +52,8 @@ object Dependencies {
     const val facebookShimmer  = "com.facebook.shimmer:shimmer:${Versions.facebookShimmer}"
     const val room  = "androidx.room:room-runtime:${Versions.room}"
     const val roomCompiler  = "androidx.room:room-compiler:${Versions.room}"
-    const val roomPaging  = "androidx.room:room-paging:${Versions.roomPaging}"
+    const val roomKtx  = "androidx.room:room-ktx:${Versions.room}"
+    const val roomPaging  = "androidx.room:room-paging:${Versions.room}"
     const val swipeRefreshLayout  = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}"
 
     const val androidXTesting = "androidx.arch.core:core-testing:${Versions.androidXTesting}"

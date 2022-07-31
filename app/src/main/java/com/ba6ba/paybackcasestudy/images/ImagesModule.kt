@@ -18,9 +18,6 @@ import retrofit2.create
 interface ImagesModule {
 
     @Binds
-    fun bindImagePagingSourceProvider(default: DefaultImagePagingSourceProvider): ImagePagingSourceProvider
-
-    @Binds
     fun bindImageRepository(default: DefaultImageRepository): ImageRepository
 
     @Binds
@@ -28,6 +25,12 @@ interface ImagesModule {
 
     @Binds
     fun bindImageDetailUiDataTransformer(default: DefaultImageDetailUiDataTransformer): ImageDetailUiDataTransformer
+
+    @Binds
+    fun bindImageNetworkRepository(default: DefaultImageNetworkRepository): ImageNetworkRepository
+
+    @Binds
+    fun bindImagePagingSourceProvider(default: DefaultImagePagingSourceProvider): ImagePagingSourceProvider
 }
 
 @InstallIn(ViewModelComponent::class)

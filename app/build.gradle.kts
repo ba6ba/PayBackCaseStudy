@@ -79,6 +79,7 @@ dependencies {
     implementation(Dependencies.facebookShimmer)
     implementation(Dependencies.swipeRefreshLayout)
     implementation(Dependencies.room)
+    implementation(Dependencies.roomKtx)
     implementation(Dependencies.roomPaging)
 
     kapt(Dependencies.lifeCycleCompiler)

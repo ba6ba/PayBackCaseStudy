@@ -30,12 +30,11 @@ object Versions {
     const val timber = "4.7.1"
     const val coroutines = "1.5.2"
     const val lifeCycle = "2.4.0"
-    const val paging = "3.0.0"
+    const val paging = "3.1.1"
     const val lottie = "4.2.2"
     const val facebookShimmer = "0.5.0"
     const val swipeRefreshLayout = "1.1.0"
     const val room = "2.4.3"
-    const val roomPaging = "2.5.0-alpha02"
 
     const val mockitoKotlin = "2.2.0"
     const val androidXTesting = "2.1.0"

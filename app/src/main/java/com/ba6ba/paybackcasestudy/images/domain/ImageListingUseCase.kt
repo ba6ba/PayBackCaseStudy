@@ -1,14 +1,11 @@
 package com.ba6ba.paybackcasestudy.images.domain
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.ba6ba.paybackcasestudy.common.Constants
 import com.ba6ba.paybackcasestudy.common.FlowUseCase
 import com.ba6ba.paybackcasestudy.common.default
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
-import com.ba6ba.paybackcasestudy.images.data.ImagePagingSourceProvider
+import com.ba6ba.paybackcasestudy.images.data.ImageRepository
 import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -21,19 +18,12 @@ interface ImageListingUseCase : FlowUseCase<String, PagingData<ImageItemUiData>>
 }
 
 class DefaultImageListingUseCase @Inject constructor(
-    private val imagePagingSourceProvider: ImagePagingSourceProvider
+    private val imageRepository: ImageRepository
 ) : ImageListingUseCase {
     override fun execute(parameters: String): Flow<PagingData<ImageItemUiData>> =
-        Pager(
-            config = PagingConfig(Constants.PAGE_LIMIT),
-            pagingSourceFactory = {
-                imagePagingSourceProvider.get(parameters)
-            }
-        ).flow.map { pagingData ->
+        imageRepository.getImages(parameters).map { pagingData ->
             pagingData.map { imageResponseItem ->
-                mapRepoToImageUiData(
-                    imageResponseItem
-                )
+                mapRepoToImageUiData(imageResponseItem)
             }
         }
 

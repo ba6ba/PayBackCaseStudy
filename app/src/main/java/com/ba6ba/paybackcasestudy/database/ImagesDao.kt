@@ -14,7 +14,7 @@ interface ImagesDao {
     suspend fun insertAll(repos: List<ImageResponseItem>)
 
     @Query("SELECT * FROM images")
-    fun getAll(): PagingSource<Int, ImageResponseItem>
+    suspend fun getAll(): List<ImageResponseItem>
 
     @Query("DELETE FROM images")
     suspend fun clearImages()

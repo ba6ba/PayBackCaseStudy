@@ -40,6 +40,9 @@ fun <T : ViewDataBinding> Fragment.dataBinding(factory: (View) -> T): ReadOnlyPr
 fun Int?.default(other: Int? = null): Int =
     this ?: other ?: 0
 
+fun Long?.default(other: Long? = null): Long =
+    this ?: other ?: 0L
+
 fun String?.emptyIfNull() = this ?: EMPTY_STRING
 
 val String?.default

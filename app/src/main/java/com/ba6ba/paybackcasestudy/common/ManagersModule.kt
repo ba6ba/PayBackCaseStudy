@@ -1,5 +1,7 @@
 package com.ba6ba.paybackcasestudy.common
 
+import com.ba6ba.paybackcasestudy.images.data.DefaultLocalDataProvider
+import com.ba6ba.paybackcasestudy.images.data.LocalDataProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,5 +18,8 @@ interface ManagersModule {
 
     @Binds
     fun bindLightDarkModeManager(default: DefaultLightDarkModeManager): LightDarkModeManager
+
+    @Binds
+    fun bindLocalDataProvider(default: DefaultLocalDataProvider): LocalDataProvider
 
 }

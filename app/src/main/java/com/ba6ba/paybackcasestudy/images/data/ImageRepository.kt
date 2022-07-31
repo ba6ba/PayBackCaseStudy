@@ -1,18 +1,27 @@
 package com.ba6ba.paybackcasestudy.images.data
 
+import androidx.paging.*
 import com.ba6ba.network.ApiResult
 import com.ba6ba.network.BaseRepository
+import com.ba6ba.paybackcasestudy.common.Constants
+import com.ba6ba.paybackcasestudy.database.PayBackCaseStudyDatabase
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface ImageRepository : BaseRepository {
 
-    suspend fun getImages(query: String, page: Int): ApiResult<ImageListingResponse>
+    fun getImages(query: String): Flow<PagingData<ImageResponseItem>>
 }
 
 class DefaultImageRepository @Inject constructor(
-    private val imageApiService: ImageApiService
+    private val imagePagingSourceProvider: ImagePagingSourceProvider
 ) : ImageRepository {
-    override suspend fun getImages(query: String, page: Int): ApiResult<ImageListingResponse> {
-        return execute { imageApiService.getImages(query, page) }
+    override fun getImages(query: String): Flow<PagingData<ImageResponseItem>> {
+        return Pager(
+            config = PagingConfig(Constants.PAGE_LIMIT),
+            pagingSourceFactory = {
+                imagePagingSourceProvider.get(query)
+            }
+        ).flow
     }
 }
