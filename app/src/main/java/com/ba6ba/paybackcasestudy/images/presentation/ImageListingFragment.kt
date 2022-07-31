@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.ArgsConstants
 import com.ba6ba.paybackcasestudy.common.dataBinding
+import com.ba6ba.paybackcasestudy.common.showConfirmationDialog
 import com.ba6ba.paybackcasestudy.databinding.FragmentImageListingBinding
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,9 +53,11 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
     }
 
     private fun onImageClickListener(imageItemUiData: ImageItemUiData) {
-        findNavController().navigate(R.id.image_listing_to_image_details, Bundle().apply {
-            putParcelable(ArgsConstants.ARGS_DATA, imageListingViewModel.getArgsData(imageItemUiData))
-        })
+        showConfirmationDialog {
+            findNavController().navigate(R.id.image_listing_to_image_details, Bundle().apply {
+                putParcelable(ArgsConstants.ARGS_DATA, imageListingViewModel.getArgsData(imageItemUiData))
+            })
+        }
     }
 
 }

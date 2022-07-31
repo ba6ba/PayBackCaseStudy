@@ -44,7 +44,7 @@
                 android:layout_width="@dimen/_32sdp"
                 android:layout_height="@dimen/_32sdp"
                 android:layout_margin="@dimen/_4sdp"
-                android:background="@drawable/ripple_white_background"
+                android:background="@drawable/circle_icon_ripple_bg"
                 android:padding="@dimen/_8sdp"
                 android:onClick="@{() -> viewModel.onDayNightButtonClick()}"
                 app:layout_constraintEnd_toEndOf="parent"

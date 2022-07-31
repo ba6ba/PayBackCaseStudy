@@ -11,4 +11,7 @@
     <color name="retry_button_text_color">#000</color>
     <color name="failure_text_color">#fff</color>
     <color name="failure_text_description_color">#fff</color>
+    <color name="yes_button_color">#57CA5C</color>
+    <color name="no_button_color">#E40B0B</color>
+    <color name="dialog_background_color">#000</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.ba6ba.paybackcasestudy.common
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.ba6ba.paybackcasestudy.R
+import com.ba6ba.paybackcasestudy.databinding.DialogConfirmationBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -46,3 +49,20 @@ fun String?.default(other: String? = null) = this ?: other.default
 
 val View.inflater
     get() = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+fun Fragment.showConfirmationDialog(positiveButtonListener: () -> Unit) {
+    val binding = DialogConfirmationBinding.inflate(LayoutInflater.from(context))
+    val alertDialog = AlertDialog.Builder(context)
+        .setView(binding.root)
+        .create()
+    alertDialog.window?.setBackgroundDrawableResource(R.drawable.rounded_corner_background)
+    binding.dismissListener = object : DismissListener {
+        override fun onDismiss(value: Any?) {
+            value?.let {
+                positiveButtonListener()
+            }
+            alertDialog.dismiss()
+        }
+    }
+    alertDialog.show()
+}

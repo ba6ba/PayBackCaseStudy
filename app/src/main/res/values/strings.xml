@@ -7,4 +7,7 @@
     <string name="search_for_images">Search for images</string>
     <string name="default_query">fruits</string>
     <string name="no_data_found">Hmmm, it seems we have no data against this search. Do you want to try again with new query?</string>
+    <string name="do_you_want_to_see_more_details">Do you want to see more details?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

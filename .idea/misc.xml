@@ -26,6 +26,7 @@
         <entry key="app/src/main/res/drawable/transparent_ripple_item_background.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/unselected_tab_background.xml" value="0.2885" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.16145833333333334" />
+        <entry key="app/src/main/res/layout/dialog_confirmation.xml" value="0.355462646484375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/fragment_image_details.xml" value="0.39294281005859366" />
         <entry key="app/src/main/res/layout/fragment_image_listing.xml" value="0.2" />
