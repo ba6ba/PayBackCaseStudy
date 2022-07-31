@@ -107,10 +107,11 @@ fun RecyclerView.addItemDecoration(drawable: Drawable? = null) {
     addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 }
 
-@BindingAdapter(value = ["on_refresh"])
-fun SwipeRefreshLayout.onRefreshCallback(onRefresh: () -> Unit) {
+@BindingAdapter(value = ["on_refresh", "swipe_refresh_adapter"])
+fun SwipeRefreshLayout.onRefreshCallback(onRefresh: () -> Unit, adapter: ImageListingAdapter) {
     setOnRefreshListener {
         onRefresh()
+        adapter.refresh()
         isRefreshing = false
     }
 }

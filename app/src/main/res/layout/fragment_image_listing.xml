@@ -17,7 +17,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/fragment_root"
         android:layout_width="match_parent"
-        app:on_refresh="@{() -> adapter.refresh()}"
+        app:on_refresh="@{() -> viewModel.onRefresh()}"
+        app:swipe_refresh_adapter="@{adapter}"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout

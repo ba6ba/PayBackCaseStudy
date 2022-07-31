@@ -113,12 +113,20 @@ class ImageListingViewModel @Inject constructor(
         )
     }
 
+    fun onRefresh() {
+        clearLastFetchedPage()
+    }
+
     val onQueryTextSubmit: OnQueryTextSubmit by lazy {
         object : OnQueryTextSubmit {
             override fun onSubmit(query: String) {
-                localDataProvider.clearLastFetchedPage()
+                clearLastFetchedPage()
                 _onQueryTextChange.value = query
             }
         }
+    }
+
+    private fun clearLastFetchedPage() {
+        localDataProvider.clearLastFetchedPage()
     }
 }
