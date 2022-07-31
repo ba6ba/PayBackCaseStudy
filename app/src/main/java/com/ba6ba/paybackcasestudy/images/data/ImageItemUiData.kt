@@ -7,5 +7,16 @@ import kotlinx.parcelize.Parcelize
 data class ImageItemUiData(
     val imageUrl: String,
     val userName: String,
-    val tags: List<String>
-) : Parcelable
+    val tags: List<String>,
+    val metadata: Metadata
+) : Parcelable {
+
+    @Parcelize
+    data class Metadata(
+        val hdImageUrl: String,
+        val tags: String,
+        val likes: Long,
+        val comments: Long,
+        val downloads: Long
+    ) : Parcelable
+}

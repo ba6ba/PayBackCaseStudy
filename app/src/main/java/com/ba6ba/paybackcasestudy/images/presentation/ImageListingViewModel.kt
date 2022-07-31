@@ -1,5 +1,6 @@
 package com.ba6ba.paybackcasestudy.images.presentation
 
+import android.os.Parcelable
 import androidx.lifecycle.*
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -7,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.*
+import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -98,6 +100,18 @@ class ImageListingViewModel @Inject constructor(
 
             else -> EMPTY_STRING
         }.default
+    }
+
+    fun getArgsData(imageItemUiData: ImageItemUiData): ImageDetailArgsData {
+        return ImageDetailArgsData(
+            previewUrl = imageItemUiData.imageUrl,
+            userName = imageItemUiData.userName,
+            tags = imageItemUiData.metadata.tags,
+            likes = imageItemUiData.metadata.likes,
+            comments = imageItemUiData.metadata.comments,
+            downloads = imageItemUiData.metadata.downloads,
+            hdImageUrl = imageItemUiData.metadata.hdImageUrl
+        )
     }
 
     val onQueryTextSubmit: OnQueryTextSubmit by lazy {

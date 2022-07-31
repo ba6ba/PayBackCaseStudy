@@ -13,3 +13,7 @@ object Constants {
     const val DEFAULT_PAGE = 1
     const val API_KEY = Constants.API_KEY
 }
+
+object ArgsConstants {
+    const val ARGS_DATA = "argsData"
+}

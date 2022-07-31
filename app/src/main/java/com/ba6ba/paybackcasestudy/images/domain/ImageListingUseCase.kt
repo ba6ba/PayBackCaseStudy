@@ -41,7 +41,14 @@ class DefaultImageListingUseCase @Inject constructor(
         return ImageItemUiData(
             imageUrl = imageResponseItem.previewURL.default,
             userName = imageResponseItem.user.default,
-            tags = imageResponseItem.tags?.split(", ").orEmpty().take(3)
+            tags = imageResponseItem.tags?.split(", ").orEmpty().take(3),
+            metadata = ImageItemUiData.Metadata(
+                hdImageUrl = imageResponseItem.largeImageURL.default,
+                tags = imageResponseItem.tags.default,
+                likes = imageResponseItem.likes ?: 0L,
+                comments = imageResponseItem.comments ?: 0L,
+                downloads = imageResponseItem.downloads ?: 0L,
+            )
         )
     }
 }

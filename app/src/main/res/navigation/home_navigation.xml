@@ -20,6 +20,12 @@
         android:id="@+id/imageDetailsFragment"
         android:name="com.ba6ba.paybackcasestudy.images.presentation.ImageDetailsFragment"
         android:label="Image Details"
-        tools:layout="@layout/fragment_image_details" />
+        tools:layout="@layout/fragment_image_details">
+
+        <argument
+            android:name="argsData"
+            app:argType="com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData" />
+
+    </fragment>
 
 </navigation>

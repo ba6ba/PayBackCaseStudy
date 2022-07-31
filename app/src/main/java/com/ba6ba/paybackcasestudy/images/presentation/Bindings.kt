@@ -10,8 +10,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
 import coil.transition.CrossfadeTransition
@@ -48,9 +50,13 @@ fun AppCompatImageView.updateImageDrawable(imageDrawableResource: Int) {
 
 @BindingAdapter(value = ["load_image"])
 fun ImageView.loadImage(url: String?) {
-    val radius = 20f
+    val circularProgressDrawable = CircularProgressDrawable(context)
+    circularProgressDrawable.strokeWidth = 5f
+    circularProgressDrawable.centerRadius = 30f
+    circularProgressDrawable.backgroundColor = ContextCompat.getColor(context, R.color.colorText)
+    circularProgressDrawable.start()
     load(url) {
-        placeholder(ContextCompat.getDrawable(context, R.drawable.ripple_white_background))
+        placeholder(circularProgressDrawable)
         error(drawable = ContextCompat.getDrawable(context, R.drawable.ripple_white_background))
         fallback(drawable = ContextCompat.getDrawable(context, R.drawable.ripple_white_background))
         crossfade(true)
@@ -139,3 +145,11 @@ fun AppCompatTextView.setViewStateError(viewState: ViewState<*>) {
         text = viewState.uiError.message
     }
 }
+
+@BindingAdapter(value = ["navigate_back_on_click"])
+fun View.navigateBack(unit: Unit?) {
+    setOnClickListener {
+        findNavController().navigateUp()
+    }
+}
+

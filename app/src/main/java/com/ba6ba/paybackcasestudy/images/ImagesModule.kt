@@ -2,7 +2,9 @@ package com.ba6ba.paybackcasestudy.images
 
 import com.ba6ba.network.RetrofitProvider
 import com.ba6ba.paybackcasestudy.images.data.*
+import com.ba6ba.paybackcasestudy.images.domain.DefaultImageDetailUiDataTransformer
 import com.ba6ba.paybackcasestudy.images.domain.DefaultImageListingUseCase
+import com.ba6ba.paybackcasestudy.images.domain.ImageDetailUiDataTransformer
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
 import dagger.Binds
 import dagger.Module
@@ -23,6 +25,9 @@ interface ImagesModule {
 
     @Binds
     fun bindImageListingUseCase(default: DefaultImageListingUseCase): ImageListingUseCase
+
+    @Binds
+    fun bindImageDetailUiDataTransformer(default: DefaultImageDetailUiDataTransformer): ImageDetailUiDataTransformer
 }
 
 @InstallIn(ViewModelComponent::class)

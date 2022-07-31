@@ -8,7 +8,7 @@ import com.ba6ba.paybackcasestudy.common.inflater
 import com.ba6ba.paybackcasestudy.databinding.ImageListItemBinding
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
 
-class ImageListingAdapter(private val itemClickListener: (String) -> Unit) :
+class ImageListingAdapter(private val itemClickListener: (ImageItemUiData) -> Unit) :
     PagingDataAdapter<ImageItemUiData, HomeItemViewHolder>(ImageItemDiffUtil) {
 
     override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
@@ -27,13 +27,13 @@ class ImageListingAdapter(private val itemClickListener: (String) -> Unit) :
 
 class HomeItemViewHolder(
     private val binding: ImageListItemBinding,
-    private val itemClickListener: (String) -> Unit
+    private val itemClickListener: (ImageItemUiData) -> Unit
 ) : BaseViewHolder<ImageItemUiData>(binding.root) {
     override fun onBind(item: ImageItemUiData, position: Int) {
         binding.run {
             uiData = item
             rootItem.setOnClickListener {
-                itemClickListener(item.imageUrl)
+                itemClickListener(item)
             }
         }
     }
