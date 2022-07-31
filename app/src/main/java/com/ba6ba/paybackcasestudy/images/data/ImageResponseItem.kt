@@ -1,5 +1,7 @@
 package com.ba6ba.paybackcasestudy.images.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class ImageListingResponse(
@@ -8,8 +10,9 @@ data class ImageListingResponse(
     val totalHits: Int?
 )
 
+@Entity(tableName = "images")
 data class ImageResponseItem(
-    val id: Long?,
+    @PrimaryKey val id: Long?,
     val pageURL: String?,
     val type: String?,
     val tags: String?,

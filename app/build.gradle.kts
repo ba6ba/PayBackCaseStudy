@@ -78,9 +78,12 @@ dependencies {
     implementation(Dependencies.lottie)
     implementation(Dependencies.facebookShimmer)
     implementation(Dependencies.swipeRefreshLayout)
+    implementation(Dependencies.room)
+    implementation(Dependencies.roomPaging)
 
     kapt(Dependencies.lifeCycleCompiler)
     kapt(Dependencies.hiltCompiler)
+    kapt(Dependencies.roomCompiler)
 
     testImplementation(Dependencies.androidXTesting)
     androidTestImplementation(Dependencies.androidXTesting)

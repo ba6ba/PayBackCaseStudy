@@ -34,6 +34,8 @@ object Versions {
     const val lottie = "4.2.2"
     const val facebookShimmer = "0.5.0"
     const val swipeRefreshLayout = "1.1.0"
+    const val room = "2.4.3"
+    const val roomPaging = "2.5.0-alpha02"
 
     const val mockitoKotlin = "2.2.0"
     const val androidXTesting = "2.1.0"
