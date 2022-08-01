@@ -69,3 +69,11 @@ fun Fragment.showConfirmationDialog(positiveButtonListener: () -> Unit) {
     }
     alertDialog.show()
 }
+
+fun <E> List<E>.safeSubList(from: Int, to: Int): List<E> {
+    return try {
+        subList(if (from < 0) 0 else from, if (to >= count()) lastIndex else to)
+    } catch (e: Exception) {
+        this
+    }
+}

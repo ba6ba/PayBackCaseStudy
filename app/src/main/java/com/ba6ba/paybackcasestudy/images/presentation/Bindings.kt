@@ -15,7 +15,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import coil.ImageLoader
+import coil.disk.DiskCache
 import coil.load
+import coil.memory.MemoryCache
+import coil.size.Scale
 import coil.transition.CrossfadeTransition
 import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.ViewState
@@ -57,10 +61,10 @@ fun ImageView.loadImage(url: String?) {
     circularProgressDrawable.start()
     load(url) {
         placeholder(circularProgressDrawable)
-        error(drawable = ContextCompat.getDrawable(context, R.drawable.ripple_white_background))
-        fallback(drawable = ContextCompat.getDrawable(context, R.drawable.ripple_white_background))
+        error(drawable = ContextCompat.getDrawable(context, R.drawable.ic_placeholder))
+        fallback(drawable = ContextCompat.getDrawable(context, R.drawable.ic_placeholder))
         crossfade(true)
-        transition(CrossfadeTransition())
+        scaleType = ImageView.ScaleType.CENTER_CROP
         target(
             onSuccess = { drawable ->
                 setImageDrawable(drawable)
@@ -107,11 +111,10 @@ fun RecyclerView.addItemDecoration(drawable: Drawable? = null) {
     addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 }
 
-@BindingAdapter(value = ["on_refresh", "swipe_refresh_adapter"])
-fun SwipeRefreshLayout.onRefreshCallback(onRefresh: () -> Unit, adapter: ImageListingAdapter) {
+@BindingAdapter(value = ["on_refresh"])
+fun SwipeRefreshLayout.onRefreshCallback(onSwipeRefreshListener: OnSwipeRefreshListener) {
     setOnRefreshListener {
-        onRefresh()
-        adapter.refresh()
+        onSwipeRefreshListener.onSwipeRefresh()
         isRefreshing = false
     }
 }
@@ -134,6 +137,12 @@ fun SearchView.onQueryTextSubmit(onQueryTextSubmit: OnQueryTextSubmit) {
 interface OnQueryTextSubmit {
     fun onSubmit(query: String)
 }
+
+@FunctionalInterface
+interface OnSwipeRefreshListener {
+    fun onSwipeRefresh()
+}
+
 
 @BindingAdapter(value = ["set_default_text"])
 fun SearchView.setDefaultText(text: String) {

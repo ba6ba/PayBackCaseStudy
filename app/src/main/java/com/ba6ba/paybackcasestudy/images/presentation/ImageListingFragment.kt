@@ -30,6 +30,18 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
         setBindings()
         imageListingViewModel.setPersistedDisplayMode()
         listenAdapterUpdates()
+        observeRefreshAdapter()
+    }
+
+    private fun observeRefreshAdapter() {
+        lifecycleScope.launch {
+            imageListingViewModel.refreshAdapter.observe(viewLifecycleOwner) {
+                it?.let {
+                    imageListingAdapter.refresh()
+                    imageListingViewModel.clearRefreshAdapterLiveData()
+                }
+            }
+        }
     }
 
     private fun setBindings() {
@@ -53,7 +65,10 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
     private fun onImageClickListener(imageItemUiData: ImageItemUiData) {
         showConfirmationDialog {
             findNavController().navigate(R.id.image_listing_to_image_details, Bundle().apply {
-                putParcelable(ArgsConstants.ARGS_DATA, imageListingViewModel.getArgsData(imageItemUiData))
+                putParcelable(
+                    ArgsConstants.ARGS_DATA,
+                    imageListingViewModel.getArgsData(imageItemUiData)
+                )
             })
         }
     }

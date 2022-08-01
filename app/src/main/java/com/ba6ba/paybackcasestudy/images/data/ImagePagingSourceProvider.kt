@@ -4,10 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ba6ba.network.ApiResult
 import com.ba6ba.paybackcasestudy.R
-import com.ba6ba.paybackcasestudy.common.Constants
-import com.ba6ba.paybackcasestudy.common.SharedPreferencesManager
-import com.ba6ba.paybackcasestudy.common.StringsResourceManager
-import com.ba6ba.paybackcasestudy.common.default
+import com.ba6ba.paybackcasestudy.common.*
+import com.ba6ba.paybackcasestudy.database.ImagesMetadata
 import com.ba6ba.paybackcasestudy.database.PayBackCaseStudyDatabase
 import javax.inject.Inject
 
@@ -17,7 +15,6 @@ interface ImagePagingSourceProvider {
 
 class DefaultImagePagingSourceProvider @Inject constructor(
     private val imageNetworkRepository: ImageNetworkRepository,
-    private val payBackCaseStudyDatabase: PayBackCaseStudyDatabase,
     private val stringsResourceManager: StringsResourceManager,
     private val localDataProvider: LocalDataProvider
 ) : ImagePagingSourceProvider {
@@ -27,12 +24,11 @@ class DefaultImagePagingSourceProvider @Inject constructor(
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageResponseItem> {
                 val loadResult: LoadResult<Int, ImageResponseItem>
                 val page = params.key ?: Constants.DEFAULT_PAGE
+                val lastFetchedPage = localDataProvider.getLastFetchedPage(query)
                 val pageFetchState: PageFetchState =
-                    if (page < localDataProvider.getLastFetchedPage()) {
+                    if (page < lastFetchedPage) {
                         PageFetchState.Database
-                    } else if (page == localDataProvider.getLastFetchedPage()
-                        && getListFromDatabase().isNotEmpty()
-                    ) {
+                    } else if (page == lastFetchedPage && getListFromDatabase().isNotEmpty()) {
                         PageFetchState.Database
                     } else {
                         PageFetchState.Remote
@@ -59,8 +55,7 @@ class DefaultImagePagingSourceProvider @Inject constructor(
                     PagingSource.LoadResult.Error(Throwable(stringsResourceManager.getString(R.string.no_data_found)))
                 } else {
                     val itemList = response.data.hits.orEmpty()
-                    payBackCaseStudyDatabase.getImagesDao().insertAll(itemList)
-                    localDataProvider.setLastFetchedPage(page)
+                    localDataProvider.onPageFetched(query, page, itemList)
                     PagingSource.LoadResult.Page(
                         data = itemList,
                         prevKey = getPreviousKey(page),
@@ -78,8 +73,9 @@ class DefaultImagePagingSourceProvider @Inject constructor(
 
     private suspend fun getLoadResultForDatabase(page: Int): PagingSource.LoadResult<Int, ImageResponseItem> {
         val from = page.dec().times(Constants.PAGE_LIMIT)
-        val to = from.plus(Constants.PAGE_LIMIT).dec()
-        val persistedList = getListFromDatabase().subList(from, to)
+        val to = from.plus(Constants.PAGE_LIMIT)
+        val totalItems = getListFromDatabase()
+        val persistedList = totalItems.safeSubList(from, to)
         return PagingSource.LoadResult.Page(
             data = persistedList,
             prevKey = getPreviousKey(page),
@@ -91,7 +87,7 @@ class DefaultImagePagingSourceProvider @Inject constructor(
     }
 
     private suspend fun getListFromDatabase(): List<ImageResponseItem> {
-        return payBackCaseStudyDatabase.getImagesDao().getAll()
+        return localDataProvider.getAllImages()
     }
 
     private fun getPreviousKey(page: Int): Int? =

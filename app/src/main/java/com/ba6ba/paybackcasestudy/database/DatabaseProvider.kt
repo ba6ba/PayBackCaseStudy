@@ -18,11 +18,12 @@ import javax.inject.Singleton
 private const val PAY_BACK_DATABASE = "pay_back_database"
 
 @Database(
-    entities = [ImageResponseItem::class],
+    entities = [ImageResponseItem::class, ImagesMetadata::class],
     version = 1, exportSchema = false
 )
 abstract class PayBackCaseStudyDatabase : RoomDatabase() {
     abstract fun getImagesDao(): ImagesDao
+    abstract fun getImagesMetadataDao(): ImagesMetadataDao
 }
 
 @Module

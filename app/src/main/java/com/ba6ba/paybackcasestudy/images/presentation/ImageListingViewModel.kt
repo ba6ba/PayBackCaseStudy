@@ -13,6 +13,7 @@ import com.ba6ba.paybackcasestudy.images.data.LocalDataProvider
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,14 +36,37 @@ class ImageListingViewModel @Inject constructor(
         MutableStateFlow(R.drawable.ic_day_mode)
     }
 
+    val searchQuery: StateFlow<String>
+        get() = _searchQuery
+    private val _searchQuery: MutableStateFlow<String> by lazy {
+        MutableStateFlow(EMPTY_STRING)
+    }
+
     private val _onQueryTextChange: MutableStateFlow<String> by lazy {
-        MutableStateFlow(stringsResourceManager.getString(R.string.default_query))
+        MutableStateFlow(EMPTY_STRING)
+    }
+
+    init {
+        viewModelScope.launch {
+            val query = localDataProvider.getLastSavedQuery()
+                ?: stringsResourceManager.getString(R.string.default_query)
+            _onQueryTextChange.value = query
+            _searchQuery.value = query
+        }
+    }
+
+    val refreshAdapter: LiveData<Unit?>
+        get() = _refreshAdapter
+    private val _refreshAdapter: MutableLiveData<Unit?> by lazy {
+        MutableLiveData(null)
     }
 
     val pagingDataFlow: Flow<PagingData<ImageItemUiData>> by lazy {
-        _onQueryTextChange.flatMapLatest { query ->
-            imageListingUseCase(query)
-        }.cachedIn(viewModelScope)
+        _onQueryTextChange
+            .filter { it.isNotEmpty() }
+            .flatMapLatest { query ->
+                imageListingUseCase(query)
+            }.cachedIn(viewModelScope)
     }
 
     fun setPersistedDisplayMode() {
@@ -113,20 +137,34 @@ class ImageListingViewModel @Inject constructor(
         )
     }
 
-    fun onRefresh() {
-        clearLastFetchedPage()
+    val onRefresh = object : OnSwipeRefreshListener {
+        override fun onSwipeRefresh() {
+            onNewSearch {
+                _refreshAdapter.value = Unit
+            }
+        }
     }
 
     val onQueryTextSubmit: OnQueryTextSubmit by lazy {
         object : OnQueryTextSubmit {
             override fun onSubmit(query: String) {
-                clearLastFetchedPage()
-                _onQueryTextChange.value = query
+                if (_onQueryTextChange.value != query) {
+                    onNewSearch {
+                        _onQueryTextChange.value = query
+                    }
+                }
             }
         }
     }
 
-    private fun clearLastFetchedPage() {
-        localDataProvider.clearLastFetchedPage()
+    private fun onNewSearch(completed: suspend () -> Unit) {
+        viewModelScope.launch {
+            localDataProvider.onNewSearch()
+            completed()
+        }
+    }
+
+    fun clearRefreshAdapterLiveData() {
+        _refreshAdapter.value = null
     }
 }

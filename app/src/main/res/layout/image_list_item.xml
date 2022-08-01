@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:elevation="@dimen/_4sdp"
             android:layout_height="@dimen/_160sdp"
-            android:scaleType="centerCrop"
             android:background="@color/very_light_grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

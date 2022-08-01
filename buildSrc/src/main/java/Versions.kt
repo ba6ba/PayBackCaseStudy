@@ -12,8 +12,8 @@ object Versions {
     const val hiltNavigationFragment = "1.0.0"
 
     const val retrofit = "2.9.0"
-    const val okhttp3 = "4.2.1"
-    const val coil = "1.4.0"
+    const val okhttp3 = "4.10.0"
+    const val coil = "2.1.0"
 
     const val firebase = "17.4.3"
     const val constraintLayoutVersion = "2.1.4"

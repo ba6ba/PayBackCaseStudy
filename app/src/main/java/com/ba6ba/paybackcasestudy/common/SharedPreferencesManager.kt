@@ -9,8 +9,6 @@ import javax.inject.Inject
 interface SharedPreferencesManager {
     fun getCurrentDisplayMode(): Int
     fun setCurrentDisplayMode(mode: Int)
-    fun getLastFetchedPage(): Int
-    fun setLastFetchedPage(page: Int)
 }
 
 class DefaultSharedPreferencesManager @Inject constructor(
@@ -35,18 +33,7 @@ class DefaultSharedPreferencesManager @Inject constructor(
         }
     }
 
-    override fun getLastFetchedPage(): Int {
-        return sharedPreferences.getInt(KEY_LAST_FETCHED_PAGE, Constants.DEFAULT_PAGE).default()
-    }
-
-    override fun setLastFetchedPage(page: Int) {
-        sharedPreferences.edit {
-            putInt(KEY_LAST_FETCHED_PAGE, page)
-        }
-    }
-
     companion object {
         private const val KEY_CURRENT_DISPLAY_MODE = "KEY_CURRENT_DISPLAY_MODE"
-        private const val KEY_LAST_FETCHED_PAGE = "KEY_LAST_FETCHED_PAGE"
     }
 }

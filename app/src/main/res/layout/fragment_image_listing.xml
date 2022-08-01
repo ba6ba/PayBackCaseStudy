@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.ba6ba.paybackcasestudy.images.presentation.ImageListingViewModel" />
@@ -17,9 +18,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/fragment_root"
         android:layout_width="match_parent"
-        app:on_refresh="@{() -> viewModel.onRefresh()}"
-        app:swipe_refresh_adapter="@{adapter}"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:on_refresh="@{viewModel.onRefresh}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,11 +46,11 @@
                 android:layout_height="@dimen/_32sdp"
                 android:layout_margin="@dimen/_4sdp"
                 android:background="@drawable/circle_icon_ripple_bg"
-                android:padding="@dimen/_8sdp"
                 android:onClick="@{() -> viewModel.onDayNightButtonClick()}"
+                android:padding="@dimen/_8sdp"
+                app:image_drawable_resource="@{viewModel.dayNightIconResource}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:image_drawable_resource="@{viewModel.dayNightIconResource}"
                 tools:src="@drawable/ic_night_mode" />
 
             <View
@@ -68,27 +68,27 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/search_background"
                 android:textSize="@dimen/_12ssp"
-                app:queryBackground="@drawable/search_background"
-                app:iconifiedByDefault="false"
-                app:set_default_text="@{@string/default_query}"
-                app:on_query_text_submit_listener="@{viewModel.onQueryTextSubmit}"
-                app:searchIcon="@drawable/ic_search"
                 app:closeIcon="@drawable/ic_close"
-                app:queryHint="@string/search_for_images"
+                app:iconifiedByDefault="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider" />
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:on_query_text_submit_listener="@{viewModel.onQueryTextSubmit}"
+                app:queryBackground="@drawable/search_background"
+                app:queryHint="@string/search_for_images"
+                app:searchIcon="@drawable/ic_search"
+                app:set_default_text="@{viewModel.searchQuery}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/failureLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:show_on_error="@{viewModel.viewStateFlow}"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_view">
+                app:layout_constraintTop_toBottomOf="@id/search_view"
+                app:show_on_error="@{viewModel.viewStateFlow}">
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/retryAnimation"
@@ -128,10 +128,10 @@
                     android:gravity="center"
                     android:textColor="@color/failure_text_description_color"
                     android:textSize="@dimen/_12sdp"
-                    app:set_view_state_error_message="@{viewModel.viewStateFlow}"
                     app:layout_constraintBottom_toTopOf="@+id/retryButton"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:set_view_state_error_message="@{viewModel.viewStateFlow}" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/retryButton"
@@ -141,10 +141,10 @@
                     android:background="@drawable/retry_button_ripple_background"
                     android:fontFamily="@font/muli_regular"
                     android:gravity="center"
+                    android:onClick="@{() -> adapter.retry()}"
                     android:text="@string/retry"
                     android:textColor="@color/retry_button_text_color"
                     android:textSize="@dimen/_12sdp"
-                    android:onClick="@{() -> adapter.retry()}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:textAllCaps="false" />
 
@@ -154,27 +154,27 @@
                 android:id="@+id/items_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="vertical"
                 android:scrollbarSize="@dimen/_4sdp"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
-                app:show_on_success="@{viewModel.viewStateFlow}"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/search_view"
-                app:spanCount="2"
                 app:set_paging_adapter="@{adapter}"
+                app:show_on_success="@{viewModel.viewStateFlow}"
+                app:spanCount="2"
                 tools:listitem="@layout/image_list_item"
                 tools:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/loading_layout"
+                show_on_loading="@{viewModel.viewStateFlow}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                show_on_loading="@{viewModel.viewStateFlow}"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="vertical"
                 android:visibility="gone"
