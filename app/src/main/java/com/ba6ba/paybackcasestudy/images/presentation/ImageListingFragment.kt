@@ -52,8 +52,8 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
     }
 
     private fun listenAdapterUpdates() {
-        lifecycleScope.launch {
-            imageListingViewModel.pagingDataFlow.collectLatest { pagingData ->
+        lifecycleScope.launchWhenCreated {
+            imageListingViewModel.pagingData.collectLatest { pagingData ->
                 imageListingAdapter.submitData(pagingData)
             }
         }

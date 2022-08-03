@@ -73,11 +73,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider"
+                app:set_default_text="@{viewModel.onQueryTextChange}"
                 app:on_query_text_submit_listener="@{viewModel.onQueryTextSubmit}"
                 app:queryBackground="@drawable/search_background"
                 app:queryHint="@string/search_for_images"
-                app:searchIcon="@drawable/ic_search"
-                app:set_default_text="@{viewModel.searchQuery}" />
+                app:searchIcon="@drawable/ic_search" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/failureLayout"

@@ -1,44 +1,91 @@
 package com.ba6ba.paybackcasestudy.images.domain
 
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.paging.*
+import com.ba6ba.paybackcasestudy.R
+import com.ba6ba.paybackcasestudy.common.Constants
 import com.ba6ba.paybackcasestudy.common.FlowUseCase
-import com.ba6ba.paybackcasestudy.common.default
-import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
+import com.ba6ba.paybackcasestudy.common.StringsResourceManager
 import com.ba6ba.paybackcasestudy.images.data.ImageRepository
 import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
+import com.ba6ba.paybackcasestudy.images.data.FetchImageMode
+import com.ba6ba.paybackcasestudy.images.data.ImageFetchResult
+import com.ba6ba.paybackcasestudy.metadata.data.MetadataRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-interface ImageListingUseCase : FlowUseCase<String, PagingData<ImageItemUiData>> {
-    override fun dispatcher(): CoroutineDispatcher = Dispatchers.IO
+interface ImageListingUseCase : FlowUseCase<String, PagingData<ImageResponseItem>> {
+    override val dispatcher: CoroutineDispatcher
+        get() = Dispatchers.IO
 }
 
 class DefaultImageListingUseCase @Inject constructor(
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
+    private val metadataRepository: MetadataRepository,
+    private val stringsResourceManager: StringsResourceManager
 ) : ImageListingUseCase {
-    override fun execute(parameters: String): Flow<PagingData<ImageItemUiData>> =
-        imageRepository.getImages(parameters).map { pagingData ->
-            pagingData.map { imageResponseItem ->
-                mapRepoToImageUiData(imageResponseItem)
-            }
-        }
+    override fun execute(parameters: String): Flow<PagingData<ImageResponseItem>> =
+        Pager(
+            config = PagingConfig(Constants.PAGE_LIMIT),
+            pagingSourceFactory = {
+                object : PagingSource<Int, ImageResponseItem>() {
+                    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageResponseItem> {
+                        val loadResult: LoadResult<Int, ImageResponseItem>
+                        val page = params.key ?: Constants.DEFAULT_PAGE
+                        val lastFetchedPage =
+                            metadataRepository.getLastFetchedPage(query = parameters)
+                        val fetchImageMode: FetchImageMode =
+                            if (page < lastFetchedPage) {
+                                FetchImageMode.Database
+                            } else if (page == lastFetchedPage && hasImagesInDatabase()) {
+                                FetchImageMode.Database
+                            } else {
+                                FetchImageMode.Remote(page, parameters)
+                            }
 
-    private fun mapRepoToImageUiData(imageResponseItem: ImageResponseItem): ImageItemUiData {
-        return ImageItemUiData(
-            imageUrl = imageResponseItem.previewURL.default,
-            userName = imageResponseItem.user.default,
-            tags = imageResponseItem.tags?.split(", ").orEmpty().take(3),
-            metadata = ImageItemUiData.Metadata(
-                hdImageUrl = imageResponseItem.largeImageURL.default,
-                tags = imageResponseItem.tags.default,
-                likes = imageResponseItem.likes ?: 0L,
-                comments = imageResponseItem.comments ?: 0L,
-                downloads = imageResponseItem.downloads ?: 0L,
-            )
-        )
+                        loadResult = when (val result = imageRepository.getImages(fetchImageMode)) {
+                            is ImageFetchResult.Error ->
+                                LoadResult.Error(Throwable(result.message))
+
+                            is ImageFetchResult.Empty ->
+                                LoadResult.Error(
+                                    Throwable(
+                                        stringsResourceManager.getString(
+                                            R.string.no_data_found
+                                        )
+                                    )
+                                )
+
+                            is ImageFetchResult.Data -> {
+                                if (fetchImageMode is FetchImageMode.Remote) {
+                                    metadataRepository.insert(parameters, page)
+                                }
+                                LoadResult.Page(
+                                    data = result.data,
+                                    prevKey = getPreviousKey(page),
+                                    nextKey = getNextKey(page, result.data.count())
+                                )
+                            }
+                        }
+                        return loadResult
+                    }
+
+                    override fun getRefreshKey(
+                        state: PagingState<Int, ImageResponseItem>
+                    ): Int? = null
+                }
+            }
+        ).flow
+
+    private suspend fun hasImagesInDatabase(): Boolean {
+        val result = imageRepository.getImages(FetchImageMode.Database)
+        return result is ImageFetchResult.Data && result.data.isNotEmpty()
     }
+
+    private fun getPreviousKey(page: Int): Int? =
+        if (Constants.DEFAULT_PAGE == page) null else page
+
+    private fun getNextKey(page: Int, currentFetchedItemsCount: Int): Int? =
+        if (currentFetchedItemsCount < Constants.PAGE_LIMIT) null else page.inc()
 }

@@ -3,7 +3,7 @@ package com.ba6ba.paybackcasestudy.images.presentation
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import com.ba6ba.paybackcasestudy.BaseViewHolder
+import com.ba6ba.paybackcasestudy.core.BaseViewHolder
 import com.ba6ba.paybackcasestudy.common.inflater
 import com.ba6ba.paybackcasestudy.databinding.ImageLoadStateItemBinding
 

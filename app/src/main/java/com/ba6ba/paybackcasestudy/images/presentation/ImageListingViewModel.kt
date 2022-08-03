@@ -1,16 +1,14 @@
 package com.ba6ba.paybackcasestudy.images.presentation
 
 import androidx.lifecycle.*
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
+import androidx.paging.*
 import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.*
 import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
-import com.ba6ba.paybackcasestudy.images.data.LocalDataProvider
+import com.ba6ba.paybackcasestudy.images.domain.FetchSavedQueryUseCase
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
+import com.ba6ba.paybackcasestudy.images.domain.RefreshSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -20,8 +18,9 @@ import javax.inject.Inject
 class ImageListingViewModel @Inject constructor(
     private val lightDarkModeManager: LightDarkModeManager,
     private val imageListingUseCase: ImageListingUseCase,
-    private val stringsResourceManager: StringsResourceManager,
-    private val localDataProvider: LocalDataProvider
+    private val imageUiDataTransformer: ImageUiDataTransformer,
+    private val refreshSearchUseCase: RefreshSearchUseCase,
+    private val fetchSavedQueryUseCase: FetchSavedQueryUseCase
 ) : ViewModel() {
 
     val viewStateFlow: StateFlow<ViewState<Unit>>
@@ -36,22 +35,16 @@ class ImageListingViewModel @Inject constructor(
         MutableStateFlow(R.drawable.ic_day_mode)
     }
 
-    val searchQuery: StateFlow<String>
-        get() = _searchQuery
-    private val _searchQuery: MutableStateFlow<String> by lazy {
-        MutableStateFlow(EMPTY_STRING)
-    }
-
+    val onQueryTextChange: StateFlow<String>
+        get() = _onQueryTextChange
     private val _onQueryTextChange: MutableStateFlow<String> by lazy {
         MutableStateFlow(EMPTY_STRING)
     }
 
     init {
         viewModelScope.launch {
-            val query = localDataProvider.getLastSavedQuery()
-                ?: stringsResourceManager.getString(R.string.default_query)
+            val query = fetchSavedQueryUseCase()
             _onQueryTextChange.value = query
-            _searchQuery.value = query
         }
     }
 
@@ -61,11 +54,15 @@ class ImageListingViewModel @Inject constructor(
         MutableLiveData(null)
     }
 
-    val pagingDataFlow: Flow<PagingData<ImageItemUiData>> by lazy {
+    val pagingData: Flow<PagingData<ImageItemUiData>> by lazy {
         _onQueryTextChange
             .filter { it.isNotEmpty() }
             .flatMapLatest { query ->
-                imageListingUseCase(query)
+                imageListingUseCase(query).map { pagingData ->
+                    pagingData.map { data ->
+                        imageUiDataTransformer.transform(data)
+                    }
+                }
             }.cachedIn(viewModelScope)
     }
 
@@ -139,7 +136,7 @@ class ImageListingViewModel @Inject constructor(
 
     val onRefresh = object : OnSwipeRefreshListener {
         override fun onSwipeRefresh() {
-            onNewSearch {
+            refreshData {
                 _refreshAdapter.value = Unit
             }
         }
@@ -149,7 +146,7 @@ class ImageListingViewModel @Inject constructor(
         object : OnQueryTextSubmit {
             override fun onSubmit(query: String) {
                 if (_onQueryTextChange.value != query) {
-                    onNewSearch {
+                    refreshData {
                         _onQueryTextChange.value = query
                     }
                 }
@@ -157,9 +154,9 @@ class ImageListingViewModel @Inject constructor(
         }
     }
 
-    private fun onNewSearch(completed: suspend () -> Unit) {
+    private fun refreshData(completed: () -> Unit) {
         viewModelScope.launch {
-            localDataProvider.onNewSearch()
+            refreshSearchUseCase()
             completed()
         }
     }

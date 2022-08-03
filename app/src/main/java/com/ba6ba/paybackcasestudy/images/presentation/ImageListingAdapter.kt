@@ -3,7 +3,7 @@ package com.ba6ba.paybackcasestudy.images.presentation
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.ba6ba.paybackcasestudy.BaseViewHolder
+import com.ba6ba.paybackcasestudy.core.BaseViewHolder
 import com.ba6ba.paybackcasestudy.common.inflater
 import com.ba6ba.paybackcasestudy.databinding.ImageListItemBinding
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData

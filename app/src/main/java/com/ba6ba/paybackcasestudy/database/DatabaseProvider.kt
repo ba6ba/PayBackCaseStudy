@@ -5,25 +5,22 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Singleton
 
 private const val PAY_BACK_DATABASE = "pay_back_database"
 
 @Database(
-    entities = [ImageResponseItem::class, ImagesMetadata::class],
+    entities = [ImageResponseItem::class, Metadata::class],
     version = 1, exportSchema = false
 )
 abstract class PayBackCaseStudyDatabase : RoomDatabase() {
     abstract fun getImagesDao(): ImagesDao
-    abstract fun getImagesMetadataDao(): ImagesMetadataDao
+    abstract fun getMetadataDao(): MetadataDao
 }
 
 @Module
@@ -38,4 +35,12 @@ class DatabaseModule {
             PayBackCaseStudyDatabase::class.java,
             PAY_BACK_DATABASE
         ).build()
+
+    @Provides
+    fun provideImagesDao(payBackCaseStudyDatabase: PayBackCaseStudyDatabase): ImagesDao =
+        payBackCaseStudyDatabase.getImagesDao()
+
+    @Provides
+    fun provideMetadataDao(payBackCaseStudyDatabase: PayBackCaseStudyDatabase): MetadataDao =
+        payBackCaseStudyDatabase.getMetadataDao()
 }

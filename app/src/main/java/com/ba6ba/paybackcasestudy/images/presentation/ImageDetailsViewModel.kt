@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.ba6ba.paybackcasestudy.common.ArgsConstants
 import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemDetailUiData
-import com.ba6ba.paybackcasestudy.images.domain.ImageDetailUiDataTransformer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

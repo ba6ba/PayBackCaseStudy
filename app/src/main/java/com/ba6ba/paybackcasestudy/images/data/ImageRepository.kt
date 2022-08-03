@@ -1,27 +1,50 @@
 package com.ba6ba.paybackcasestudy.images.data
 
-import androidx.paging.*
 import com.ba6ba.network.ApiResult
-import com.ba6ba.network.BaseRepository
-import com.ba6ba.paybackcasestudy.common.Constants
-import com.ba6ba.paybackcasestudy.database.PayBackCaseStudyDatabase
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-interface ImageRepository : BaseRepository {
+interface ImageRepository {
 
-    fun getImages(query: String): Flow<PagingData<ImageResponseItem>>
+    suspend fun getImages(fetchImageMode: FetchImageMode): ImageFetchResult
+    suspend fun refresh()
 }
 
 class DefaultImageRepository @Inject constructor(
-    private val imagePagingSourceProvider: ImagePagingSourceProvider
+    private val imageLocalDataSource: ImageLocalDataSource,
+    private val imageNetworkDataSource: ImageNetworkDataSource
 ) : ImageRepository {
-    override fun getImages(query: String): Flow<PagingData<ImageResponseItem>> {
-        return Pager(
-            config = PagingConfig(Constants.PAGE_LIMIT),
-            pagingSourceFactory = {
-                imagePagingSourceProvider.get(query)
+    override suspend fun getImages(fetchImageMode: FetchImageMode): ImageFetchResult {
+        return when (fetchImageMode) {
+            FetchImageMode.Database -> {
+                val storedImages = imageLocalDataSource.getAllImages()
+                if (storedImages.isEmpty()) {
+                    ImageFetchResult.Empty
+                } else {
+                    ImageFetchResult.Data(storedImages)
+                }
             }
-        ).flow
+
+            is FetchImageMode.Remote -> {
+                when (val apiResult =
+                    imageNetworkDataSource.getImages(fetchImageMode.query, fetchImageMode.page)) {
+                    is ApiResult.Success -> {
+                        val fetchedList = apiResult.data.hits.orEmpty()
+                        if (fetchedList.isEmpty()) {
+                            ImageFetchResult.Empty
+                        } else {
+                            imageLocalDataSource.insertAll(fetchedList)
+                            ImageFetchResult.Data(fetchedList)
+                        }
+                    }
+
+                    is ApiResult.Failure ->
+                        ImageFetchResult.Error(apiResult.error.message)
+                }
+            }
+        }
+    }
+
+    override suspend fun refresh() {
+        imageLocalDataSource.refresh()
     }
 }

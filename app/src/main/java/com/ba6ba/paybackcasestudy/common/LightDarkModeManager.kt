@@ -10,7 +10,7 @@ interface LightDarkModeManager {
 }
 
 class DefaultLightDarkModeManager @Inject constructor(
-    private val sharedPreferencesManager: SharedPreferencesManager
+    private val localDataSource: LocalDataSource
 ) : LightDarkModeManager {
     override fun toggle() {
         if (isDarkModeEnabled()) {
@@ -21,7 +21,7 @@ class DefaultLightDarkModeManager @Inject constructor(
     }
 
     override fun isDarkModeEnabled(): Boolean {
-        return sharedPreferencesManager.getCurrentDisplayMode() == DayNightModeConstants.NIGHT_MODE
+        return localDataSource.getCurrentDisplayMode() == DayNightModeConstants.NIGHT_MODE
     }
 
     override fun setCurrentMode() {
@@ -33,16 +33,16 @@ class DefaultLightDarkModeManager @Inject constructor(
     }
 
     private fun enableDarkMode() {
-        sharedPreferencesManager.setCurrentDisplayMode(DayNightModeConstants.NIGHT_MODE)
+        localDataSource.setCurrentDisplayMode(DayNightModeConstants.NIGHT_MODE)
         setMode()
     }
 
     private fun enableLightMode() {
-        sharedPreferencesManager.setCurrentDisplayMode(DayNightModeConstants.DAY_MODE)
+        localDataSource.setCurrentDisplayMode(DayNightModeConstants.DAY_MODE)
         setMode()
     }
 
     private fun setMode() {
-        AppCompatDelegate.setDefaultNightMode(sharedPreferencesManager.getCurrentDisplayMode())
+        AppCompatDelegate.setDefaultNightMode(localDataSource.getCurrentDisplayMode())
     }
 }

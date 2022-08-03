@@ -146,7 +146,7 @@ interface OnSwipeRefreshListener {
 
 @BindingAdapter(value = ["set_default_text"])
 fun SearchView.setDefaultText(text: String) {
-    setQuery(text, true)
+    setQuery(text, false)
 }
 
 @BindingAdapter(value = ["set_view_state_error_message"])
