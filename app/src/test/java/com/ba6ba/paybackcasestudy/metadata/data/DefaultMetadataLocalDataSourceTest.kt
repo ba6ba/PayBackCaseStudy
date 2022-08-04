@@ -17,7 +17,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class DefaultMetadataRepositoryTest: BaseTest() {
+class DefaultMetadataLocalDataSourceTest: BaseTest() {
 
     @Mock
     lateinit var metadataDao: MetadataDao
