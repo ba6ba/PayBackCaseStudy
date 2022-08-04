@@ -3,6 +3,7 @@ package com.ba6ba.paybackcasestudy.images.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.ba6ba.paybackcasestudy.common.ArgsConstants
+import com.ba6ba.paybackcasestudy.common.ArgsDataException
 import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemDetailUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,7 @@ class ImageDetailsViewModel @Inject constructor(
 
     private val imageDetailArgsData: ImageDetailArgsData by lazy {
         savedStateHandle.get<ImageDetailArgsData>(ArgsConstants.ARGS_DATA)
-            ?: throw IllegalAccessException(ImageDetailArgsData::class.java.simpleName)
+            ?: throw ArgsDataException(ImageDetailArgsData::class.java.simpleName)
     }
 
     val imageDetailUiData: StateFlow<ImageItemDetailUiData>

@@ -17,3 +17,5 @@ object Constants {
 object ArgsConstants {
     const val ARGS_DATA = "argsData"
 }
+
+class ArgsDataException(override val message: String) : Throwable(message)
