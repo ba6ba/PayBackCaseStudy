@@ -6,6 +6,7 @@ import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.*
 import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
+import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
 import com.ba6ba.paybackcasestudy.images.domain.FetchSavedQueryUseCase
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
 import com.ba6ba.paybackcasestudy.images.domain.RefreshSearchUseCase
@@ -58,13 +59,21 @@ class ImageListingViewModel @Inject constructor(
         _onQueryTextChange
             .filter { it.isNotEmpty() }
             .flatMapLatest { query ->
-                imageListingUseCase(query).map { pagingData ->
+                getPagingDataFlow(query).map { pagingData ->
                     pagingData.map { data ->
                         imageUiDataTransformer.transform(data)
                     }
                 }
             }.cachedIn(viewModelScope)
     }
+
+    private fun getPagingDataFlow(query: String): Flow<PagingData<ImageResponseItem>> =
+        Pager(
+            PagingConfig(Constants.PAGE_LIMIT),
+            pagingSourceFactory = {
+                imageListingUseCase(query)
+            }
+        ).flow
 
     fun setPersistedDisplayMode() {
         lightDarkModeManager.setCurrentMode()

@@ -4,7 +4,9 @@ import com.ba6ba.paybackcasestudy.common.LightDarkModeManager
 import com.ba6ba.paybackcasestudy.common.StringsResourceManager
 import com.ba6ba.paybackcasestudy.images.data.ImageDetailArgsData
 import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
+import com.ba6ba.paybackcasestudy.images.domain.FetchSavedQueryUseCase
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
+import com.ba6ba.paybackcasestudy.images.domain.RefreshSearchUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -22,14 +24,26 @@ internal class ImageListingViewModelTest {
     lateinit var imageListingUseCase: ImageListingUseCase
 
     @Mock
-    lateinit var stringsResourceManager: StringsResourceManager
+    lateinit var imageUiDataTransformer: ImageUiDataTransformer
+
+    @Mock
+    lateinit var refreshSearchUseCase: RefreshSearchUseCase
+
+    @Mock
+    lateinit var fetchSavedQueryUseCase: FetchSavedQueryUseCase
 
     private lateinit var imageListingViewModel: ImageListingViewModel
 
     @Before
     fun setUp() {
         imageListingViewModel =
-            ImageListingViewModel(lightDarkModeManager, imageListingUseCase, stringsResourceManager)
+            ImageListingViewModel(
+                lightDarkModeManager,
+                imageListingUseCase,
+                imageUiDataTransformer,
+                refreshSearchUseCase,
+                fetchSavedQueryUseCase
+            )
     }
 
     @Test
