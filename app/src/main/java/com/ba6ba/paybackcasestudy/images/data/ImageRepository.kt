@@ -1,6 +1,8 @@
 package com.ba6ba.paybackcasestudy.images.data
 
 import com.ba6ba.network.ApiResult
+import com.ba6ba.paybackcasestudy.common.default
+import com.ba6ba.paybackcasestudy.images.domain.Images
 import javax.inject.Inject
 
 interface ImageRepository {
@@ -28,7 +30,8 @@ class DefaultImageRepository @Inject constructor(
                 when (val apiResult =
                     imageNetworkDataSource.getImages(fetchImageMode.query, fetchImageMode.page)) {
                     is ApiResult.Success -> {
-                        val fetchedList = apiResult.data.hits.orEmpty()
+                        val fetchedList =
+                            apiResult.data.hits.orEmpty().map { mapImageResponseItemToImages(it) }
                         if (fetchedList.isEmpty()) {
                             ImageFetchResult.Empty
                         } else {
@@ -46,5 +49,18 @@ class DefaultImageRepository @Inject constructor(
 
     override suspend fun refresh() {
         imageLocalDataSource.refresh()
+    }
+
+    private fun mapImageResponseItemToImages(imageResponseItem: ImageResponseItem): Images {
+        return Images(
+            imageResponseItem.id.default(),
+            imageResponseItem.tags.orEmpty(),
+            imageResponseItem.previewURL.default,
+            imageResponseItem.largeImageURL.default,
+            imageResponseItem.downloads.default(),
+            imageResponseItem.likes.default(),
+            imageResponseItem.comments.default(),
+            imageResponseItem.user.default(),
+        )
     }
 }

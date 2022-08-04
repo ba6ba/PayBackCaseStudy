@@ -9,6 +9,7 @@ import com.ba6ba.paybackcasestudy.images.data.ImageItemUiData
 import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
 import com.ba6ba.paybackcasestudy.images.domain.FetchSavedQueryUseCase
 import com.ba6ba.paybackcasestudy.images.domain.ImageListingUseCase
+import com.ba6ba.paybackcasestudy.images.domain.Images
 import com.ba6ba.paybackcasestudy.images.domain.RefreshSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -67,7 +68,7 @@ class ImageListingViewModel @Inject constructor(
             }.cachedIn(viewModelScope)
     }
 
-    private fun getPagingDataFlow(query: String): Flow<PagingData<ImageResponseItem>> =
+    private fun getPagingDataFlow(query: String): Flow<PagingData<Images>> =
         Pager(
             PagingConfig(Constants.PAGE_LIMIT),
             pagingSourceFactory = {

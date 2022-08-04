@@ -6,13 +6,12 @@ import com.ba6ba.paybackcasestudy.common.Constants
 import com.ba6ba.paybackcasestudy.common.UseCase
 import com.ba6ba.paybackcasestudy.common.StringsResourceManager
 import com.ba6ba.paybackcasestudy.images.data.ImageRepository
-import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
 import com.ba6ba.paybackcasestudy.images.data.FetchImageMode
 import com.ba6ba.paybackcasestudy.images.data.ImageFetchResult
 import com.ba6ba.paybackcasestudy.metadata.data.MetadataRepository
 import javax.inject.Inject
 
-interface ImageListingUseCase : UseCase<String, PagingSource<Int, ImageResponseItem>>
+interface ImageListingUseCase : UseCase<String, PagingSource<Int, Images>>
 
 class DefaultImageListingUseCase @Inject constructor(
     private val imageRepository: ImageRepository,
@@ -20,10 +19,10 @@ class DefaultImageListingUseCase @Inject constructor(
     private val stringsResourceManager: StringsResourceManager
 ) : ImageListingUseCase {
 
-    override fun execute(parameters: String): PagingSource<Int, ImageResponseItem> =
-        object : PagingSource<Int, ImageResponseItem>() {
-            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ImageResponseItem> {
-                val loadResult: LoadResult<Int, ImageResponseItem>
+    override fun execute(parameters: String): PagingSource<Int, Images> =
+        object : PagingSource<Int, Images>() {
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Images> {
+                val loadResult: LoadResult<Int, Images>
                 val page = params.key ?: Constants.DEFAULT_PAGE
                 val lastFetchedPage =
                     metadataRepository.getLastFetchedPage(query = parameters)
@@ -64,7 +63,7 @@ class DefaultImageListingUseCase @Inject constructor(
             }
 
             override fun getRefreshKey(
-                state: PagingState<Int, ImageResponseItem>
+                state: PagingState<Int, Images>
             ): Int? = null
         }
 

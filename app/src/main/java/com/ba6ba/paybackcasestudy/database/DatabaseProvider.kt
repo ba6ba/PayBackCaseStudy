@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ba6ba.paybackcasestudy.images.data.ImageResponseItem
+import com.ba6ba.paybackcasestudy.images.domain.Images
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 private const val PAY_BACK_DATABASE = "pay_back_database"
 
 @Database(
-    entities = [ImageResponseItem::class, Metadata::class],
+    entities = [Images::class, Metadata::class],
     version = 1, exportSchema = false
 )
 abstract class PayBackCaseStudyDatabase : RoomDatabase() {
