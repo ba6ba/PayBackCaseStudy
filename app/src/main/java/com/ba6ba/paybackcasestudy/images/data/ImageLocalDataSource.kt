@@ -10,7 +10,7 @@ interface ImageLocalDataSource {
     suspend fun getAllImages(): List<Images>
 }
 
-class DefaultImageLocalStorageDataSource @Inject constructor(
+class DefaultImageLocalDataSource @Inject constructor(
     private val imagesDao: ImagesDao
 ) : ImageLocalDataSource {
 

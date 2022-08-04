@@ -31,7 +31,7 @@ interface ImagesModule {
     fun bindImageNetworkRepository(default: DefaultImageNetworkDataSource): ImageNetworkDataSource
 
     @Binds
-    fun bindImageLocalDataSource(default: DefaultImageLocalStorageDataSource): ImageLocalDataSource
+    fun bindImageLocalDataSource(default: DefaultImageLocalDataSource): ImageLocalDataSource
 }
 
 @InstallIn(ViewModelComponent::class)
