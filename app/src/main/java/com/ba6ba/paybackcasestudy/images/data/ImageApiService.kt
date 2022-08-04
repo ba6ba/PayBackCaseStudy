@@ -11,6 +11,7 @@ interface ImageApiService {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("key") key: String = Constants.API_KEY,
-        @Query("per_page") perPage: Int = Constants.PAGE_LIMIT
+        @Query("per_page") perPage: Int = Constants.PAGE_LIMIT,
+        @Query("safesearch") safeSearch: Boolean = true
     ): ImageListingResponse
 }
