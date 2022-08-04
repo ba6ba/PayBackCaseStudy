@@ -5,6 +5,7 @@ import com.ba6ba.paybackcasestudy.R
 import com.ba6ba.paybackcasestudy.common.Constants
 import com.ba6ba.paybackcasestudy.common.UseCase
 import com.ba6ba.paybackcasestudy.common.StringsResourceManager
+import com.ba6ba.paybackcasestudy.common.safeSubList
 import com.ba6ba.paybackcasestudy.images.data.ImageRepository
 import com.ba6ba.paybackcasestudy.images.data.FetchImageMode
 import com.ba6ba.paybackcasestudy.images.data.ImageFetchResult
@@ -53,7 +54,7 @@ class DefaultImageListingUseCase @Inject constructor(
                             metadataRepository.insert(parameters, page)
                         }
                         LoadResult.Page(
-                            data = result.data,
+                            data = getList(fetchImageMode, result, page),
                             prevKey = getPreviousKey(page),
                             nextKey = getNextKey(page, result.data.count())
                         )
@@ -66,6 +67,20 @@ class DefaultImageListingUseCase @Inject constructor(
                 state: PagingState<Int, Images>
             ): Int? = null
         }
+
+    private fun getList(
+        fetchImageMode: FetchImageMode,
+        result: ImageFetchResult.Data,
+        page: Int
+    ): List<Images> {
+        return if (fetchImageMode is FetchImageMode.Remote) {
+            result.data
+        } else {
+            val from = page.dec().times(Constants.PAGE_LIMIT)
+            val to = from.plus(Constants.PAGE_LIMIT)
+            result.data.safeSubList(from, to)
+        }
+    }
 
     private suspend fun hasImagesInDatabase(): Boolean {
         val result = imageRepository.getImages(FetchImageMode.Database)

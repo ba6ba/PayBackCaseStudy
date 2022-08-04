@@ -77,3 +77,11 @@ fun <E> List<E>.safeSubList(from: Int, to: Int): List<E> {
         this
     }
 }
+
+fun <T : Any> T.createList(size: Int): List<T> {
+    val list = arrayListOf<T>()
+    for (i in 0 .. size) {
+        list.add(this)
+    }
+    return list
+}
