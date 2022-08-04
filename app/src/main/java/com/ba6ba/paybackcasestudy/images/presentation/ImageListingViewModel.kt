@@ -43,17 +43,18 @@ class ImageListingViewModel @Inject constructor(
         MutableStateFlow(EMPTY_STRING)
     }
 
-    init {
+    fun onInit() {
+        setPersistedDisplayMode()
         viewModelScope.launch {
             val query = fetchSavedQueryUseCase()
             _onQueryTextChange.value = query
         }
     }
 
-    val refreshAdapter: LiveData<Unit?>
+    val refreshAdapter: SharedFlow<Unit>
         get() = _refreshAdapter
-    private val _refreshAdapter: MutableLiveData<Unit?> by lazy {
-        MutableLiveData(null)
+    private val _refreshAdapter: MutableSharedFlow<Unit> by lazy {
+        MutableSharedFlow()
     }
 
     val pagingData: Flow<PagingData<ImageItemUiData>> by lazy {
@@ -76,7 +77,7 @@ class ImageListingViewModel @Inject constructor(
             }
         ).flow
 
-    fun setPersistedDisplayMode() {
+    private fun setPersistedDisplayMode() {
         lightDarkModeManager.setCurrentMode()
         updateDayNightIcon()
     }
@@ -147,31 +148,29 @@ class ImageListingViewModel @Inject constructor(
     val onRefresh = object : OnSwipeRefreshListener {
         override fun onSwipeRefresh() {
             refreshData {
-                _refreshAdapter.value = Unit
+                _refreshAdapter.emit(Unit)
             }
         }
     }
 
     val onQueryTextSubmit: OnQueryTextSubmit by lazy {
         object : OnQueryTextSubmit {
-            override fun onSubmit(query: String) {
-                if (_onQueryTextChange.value != query) {
-                    refreshData {
-                        _onQueryTextChange.value = query
-                    }
-                }
+            override fun onSubmit(query: String) = onQuerySubmit(query)
+        }
+    }
+
+    private fun onQuerySubmit(query: String) {
+        if (_onQueryTextChange.value != query) {
+            refreshData {
+                _onQueryTextChange.value = query
             }
         }
     }
 
-    private fun refreshData(completed: () -> Unit) {
+    private fun refreshData(completed: suspend () -> Unit) {
         viewModelScope.launch {
             refreshSearchUseCase()
             completed()
         }
-    }
-
-    fun clearRefreshAdapterLiveData() {
-        _refreshAdapter.value = null
     }
 }

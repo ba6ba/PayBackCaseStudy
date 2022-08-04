@@ -28,18 +28,15 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBindings()
-        imageListingViewModel.setPersistedDisplayMode()
+        imageListingViewModel.onInit()
         listenAdapterUpdates()
         observeRefreshAdapter()
     }
 
     private fun observeRefreshAdapter() {
         lifecycleScope.launch {
-            imageListingViewModel.refreshAdapter.observe(viewLifecycleOwner) {
-                it?.let {
-                    imageListingAdapter.refresh()
-                    imageListingViewModel.clearRefreshAdapterLiveData()
-                }
+            imageListingViewModel.refreshAdapter.collect {
+                imageListingAdapter.refresh()
             }
         }
     }
@@ -72,5 +69,4 @@ class ImageListingFragment : Fragment(R.layout.fragment_image_listing) {
             })
         }
     }
-
 }
