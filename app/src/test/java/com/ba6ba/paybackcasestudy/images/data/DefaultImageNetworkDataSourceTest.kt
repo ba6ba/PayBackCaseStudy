@@ -1,7 +1,6 @@
 package com.ba6ba.paybackcasestudy.images.data
 
 import com.ba6ba.network.ApiResult
-import com.ba6ba.network.ErrorResponse
 import com.ba6ba.paybackcasestudy.BaseTest
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.test.runTest
@@ -15,7 +14,7 @@ import org.mockito.exceptions.base.MockitoException
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class DefaultImageNetworkRepositoryTest : BaseTest() {
+class DefaultImageNetworkDataSourceTest : BaseTest() {
 
     @Mock
     lateinit var imageApiService: ImageApiService
