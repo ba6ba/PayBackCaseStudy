@@ -8,7 +8,7 @@ interface ImageNetworkDataSource : NetworkDataSource {
     suspend fun getImages(query: String, page: Int): ApiResult<ImageListingResponse>
 }
 
-class DefaultImageNetworkRepository @Inject constructor(
+class DefaultImageNetworkDataSource @Inject constructor(
     private val imageApiService: ImageApiService
 ) : ImageNetworkDataSource {
     override suspend fun getImages(query: String, page: Int): ApiResult<ImageListingResponse> {

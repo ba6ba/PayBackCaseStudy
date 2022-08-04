@@ -28,7 +28,7 @@ interface ImagesModule {
     fun bindImageUiDataTransformer(default: DefaultImageUiDataTransformer): ImageUiDataTransformer
 
     @Binds
-    fun bindImageNetworkRepository(default: DefaultImageNetworkRepository): ImageNetworkDataSource
+    fun bindImageNetworkRepository(default: DefaultImageNetworkDataSource): ImageNetworkDataSource
 
     @Binds
     fun bindImageLocalDataSource(default: DefaultImageLocalStorageDataSource): ImageLocalDataSource
