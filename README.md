@@ -88,6 +88,8 @@ screen user can go back by tapping on back button on top. Below that there's a c
 a high quality image of the tapped cell with further details; user name, likes, comments, downloads
 and added tags.
 
+Also, case-study also supported day-night mode to enhance capabilities of an application in both modes.
+
 ## App Glimpse
 ![Images in Day mode](https://github.com/ba6ba/PayBackCaseStudy/blob/master/docs/assets/day_mode_listing.png)
 ![Images in Night mode](https://github.com/ba6ba/PayBackCaseStudy/blob/master/docs/assets/night_mode_listing.png)
