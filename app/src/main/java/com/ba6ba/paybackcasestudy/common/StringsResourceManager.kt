@@ -3,10 +3,7 @@ package com.ba6ba.paybackcasestudy.common
 import android.content.Context
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
-import dagger.Module
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 
 interface StringsResourceManager {
@@ -17,8 +14,6 @@ interface StringsResourceManager {
     fun getStringArray(@ArrayRes id: Int): Array<out String>
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
 class DefaultStringsResourceManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) : StringsResourceManager {
